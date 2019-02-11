@@ -6,7 +6,8 @@ Imports 小说助手.战斗模拟
 ''' </summary>
 Public NotInheritable Class MainPage
 	Inherits Page
-	Private 战场 As New 战场, 删除焦点 As ListView
+	ReadOnly 战场 As New 战场
+	Private 删除焦点 As ListView
 
 	Private Sub 创建团队_Click(sender As Object, e As RoutedEventArgs) Handles 创建团队.Click
 		Static a As 团队, 错误提示 As New Flyout With {.Content = New TextBlock With {.Text = "默契度必须在0~255之间"}}
@@ -157,7 +158,11 @@ Public NotInheritable Class MainPage
 	End Sub
 
 	Private Sub 导航框架_SelectionChanged(sender As NavigationView, args As NavigationViewSelectionChangedEventArgs) Handles 导航框架.SelectionChanged
+		Static 功能集 As New Dictionary(Of NavigationViewItem, FrameworkElement) From {{战斗模拟NavigationViewItem, 战斗模拟Pivot}, {人物设定NavigationViewItem, 人物设定Grid}}, 当前功能 As Pivot = 战斗模拟Pivot
 		导航框架.Header = DirectCast(args.SelectedItem, NavigationViewItem).Content
+		当前功能.Visibility = Visibility.Collapsed
+		当前功能 = 功能集(args.SelectedItem)
+		当前功能.Visibility = Visibility.Visible
 	End Sub
 
 	Private Sub 成员死亡_Click(sender As Object, e As RoutedEventArgs) Handles 成员死亡.Click

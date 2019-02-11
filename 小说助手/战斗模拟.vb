@@ -48,7 +48,7 @@ Namespace 战斗模拟
 		Private i防御 As UShort
 		Private i精准 As UShort
 		Private i闪避 As UShort
-		Private i生命 As UInteger
+		Private i生命 As ULong
 		Private Shadows Sub 战力改变()
 			MyBase.战力改变()
 			If i所属团队 IsNot Nothing Then i所属团队.战力改变()
@@ -96,17 +96,17 @@ Namespace 战斗模拟
 			End Set
 		End Property
 		ReadOnly Property 闪避Binding As New 转换Binding(Me, "闪避", GetType(UShort))
-		Property 生命 As UInteger
+		Property 生命 As ULong
 			Get
 				Return i生命
 			End Get
-			Set(value As UInteger)
+			Set(value As ULong)
 				i生命 = value
 				OnPropertyChanged("生命")
 				战力改变()
 			End Set
 		End Property
-		ReadOnly Property 生命Binding As New 转换Binding(Me, "生命", GetType(UInteger))
+		ReadOnly Property 生命Binding As New 转换Binding(Me, "生命", GetType(ULong))
 		Overrides ReadOnly Property 战力 As Single
 			Get
 				If 生命 = 0 Then
@@ -127,7 +127,7 @@ Namespace 战斗模拟
 			End Set
 		End Property
 		ReadOnly Property 所属团队Binding As New 转换Binding(Me, "所属团队")
-		Sub New(成员名 As String, 攻击 As UShort, 防御 As UShort, 精准 As UShort, 闪避 As UShort, 生命 As UInteger, 所属团队 As 团队)
+		Sub New(成员名 As String, 攻击 As UShort, 防御 As UShort, 精准 As UShort, 闪避 As UShort, 生命 As ULong, 所属团队 As 团队)
 			名称 = 成员名
 			i攻击 = 攻击
 			i防御 = 防御
@@ -146,9 +146,9 @@ Namespace 战斗模拟
 		End Function
 		Sub 复活(复活血量 As Byte, Optional 提醒战力变化 As Boolean = True)
 			If 提醒战力变化 Then
-				生命 = 防御 * 复活血量
+				生命 = CULng(防御) * 复活血量
 			Else
-				i生命 = 防御 * 复活血量
+				i生命 = CULng(防御) * 复活血量
 			End If
 		End Sub
 		Sub 死亡(Optional 提醒战力变化 As Boolean = True)
