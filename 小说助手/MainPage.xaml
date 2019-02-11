@@ -1,0 +1,129 @@
+﻿<Page
+    x:Class="小说助手.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:小说助手"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+	<NavigationView x:Name="导航框架" Header="标头">
+		<NavigationView.MenuItems>
+			<NavigationViewItem Content="战斗模拟"/>
+		</NavigationView.MenuItems>
+		<Pivot Grid.Row="0">
+			<PivotItem Header="团队成员">
+				<Grid>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition/>
+						<ColumnDefinition/>
+						<ColumnDefinition/>
+					</Grid.ColumnDefinitions>
+					<ListView x:Name="团队列表" Header="团队列表" Grid.Column="0" Margin="10" BorderBrush="Black" BorderThickness="1"/>
+					<Grid Grid.Column="1">
+						<Grid.RowDefinitions>
+							<RowDefinition Height="Auto"/>
+							<RowDefinition/>
+						</Grid.RowDefinitions>
+						<Grid Grid.Row="0">
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition/>
+								<ColumnDefinition/>
+							</Grid.ColumnDefinitions>
+							<Grid.RowDefinitions>
+								<RowDefinition/>
+								<RowDefinition/>
+								<RowDefinition/>
+								<RowDefinition/>
+							</Grid.RowDefinitions>
+							<TextBox x:Name="团队名" Header="团队名" Grid.Column="0" Grid.Row="0" Margin="10"/>
+							<TextBox x:Name="默契度" Header="默契度" Grid.Column="1" Grid.Row="0" Margin="10"/>
+							<Button x:Name="创建团队" Content="创建团队" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10"/>
+							<Button x:Name="删除团队" Content="删除团队" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10"/>
+							<Button x:Name="团队复活" Content="团队复活" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10"/>
+							<Button x:Name="团队全灭" Content="团队全灭" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10"/>
+							<TextBlock Margin="10" Text="团队战力" Grid.Column="0" Grid.Row="3"/>
+							<TextBlock Margin="10" x:Name="团队战力" Grid.Column="1" Grid.Row="3"/>
+						</Grid>
+						<ListView x:Name="成员列表" Header="成员列表" Grid.Row="1" Margin="10" BorderThickness="1" BorderBrush="Black" ItemsSource="{Binding Source=团队列表, Path=SelectedItem.成员列表}"/>
+					</Grid>
+					<Grid Grid.Column="2">
+						<Grid.RowDefinitions>
+							<RowDefinition Height="Auto"/>
+							<RowDefinition Height="Auto"/>
+							<RowDefinition Height="Auto"/>
+							<RowDefinition Height="Auto"/>
+							<RowDefinition Height="Auto"/>
+							<RowDefinition Height="Auto"/>
+							<RowDefinition Height="Auto"/>
+							<RowDefinition Height="Auto"/>
+						</Grid.RowDefinitions>
+						<TextBox x:Name="成员名" Header="成员名" Grid.Row="0" Margin="10"/>
+						<ComboBox Margin="10" x:Name="所属团队" Header="所属团队" Grid.Row="1" HorizontalAlignment="Stretch"/>
+						<TextBox x:Name="攻击" Header="攻击" Grid.Row="2" Margin="10"/>
+						<TextBox x:Name="防御" Header="防御" Grid.Row="3" Margin="10"/>
+						<TextBox x:Name="精准" Header="精准" Grid.Row="4" Margin="10"/>
+						<TextBox x:Name="闪避" Header="闪避" Grid.Row="5" Margin="10"/>
+						<TextBox x:Name="生命" Header="生命" Grid.Row="6" Margin="10"/>
+						<Grid Grid.Row="7">
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition/>
+								<ColumnDefinition/>
+							</Grid.ColumnDefinitions>
+							<Grid.RowDefinitions>
+								<RowDefinition/>
+								<RowDefinition/>
+								<RowDefinition/>
+							</Grid.RowDefinitions>
+							<Button x:Name="添加成员" Content="添加成员" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Stretch" Margin="10"/>
+							<Button x:Name="删除成员" Content="删除成员" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Stretch" Margin="10"/>
+							<Button x:Name="成员复活" Content="成员复活" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Stretch" Margin="10"/>
+							<Button x:Name="成员死亡" Content="成员死亡" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" Margin="10"/>
+							<TextBlock Margin="10" Text="个人战力" Grid.Column="0" Grid.Row="2"/>
+							<TextBlock Margin="10" x:Name="个人战力" Grid.Column="1" Grid.Row="2"/>
+						</Grid>
+					</Grid>
+				</Grid>
+			</PivotItem>
+			<PivotItem Header="战斗记录">
+				<Grid>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="Auto"/>
+						<ColumnDefinition/>
+					</Grid.ColumnDefinitions>
+					<Grid Grid.Column="0">
+						<Grid.RowDefinitions>
+							<RowDefinition Height="Auto"/>
+							<RowDefinition Height="Auto"/>
+							<RowDefinition Height="Auto"/>
+							<RowDefinition Height="Auto"/>
+							<RowDefinition Height="Auto"/>
+							<RowDefinition Height="Auto"/>
+						</Grid.RowDefinitions>
+						<Button x:Name="战一回合" Content="战一回合" Grid.Row="0" Margin="10"/>
+						<Button x:Name="不死不休" Content="不死不休" Grid.Row="1" Margin="10"/>
+						<Button x:Name="清空记录" Content="清空记录" Grid.Row="2" Margin="10"/>
+						<Button x:Name="全体复活" Content="全体复活" Grid.Row="3" Margin="10"/>
+						<TextBox x:Name="复活血量" Header="复活血量" Grid.Row="4" Margin="10"/>
+						<TextBox x:Name="当前回合" Header="当前回合" Grid.Row="5" Margin="10"/>
+					</Grid>
+					<ListBox x:Name="战斗记录" Grid.Column="1"/>
+				</Grid>
+			</PivotItem>
+			<PivotItem Header="使用说明">
+				<RichTextBlock>
+					<RichTextBlock.Blocks>
+						<Paragraph>添加/删除成员和团队的功能可望文生义。需注意的是以下指标对战斗的影响：</Paragraph>
+						<Paragraph>默契度：影响自己团队内的队员配合和对对方配合的破坏。具体来说，高默契团队倾向于集火低默契团队中高火力的脆皮，而低默契团队则往往将他们的攻击分散到高默契团队中低火力的肉盾上。因而其它指标相同时，默契高的团队胜率高。</Paragraph>
+						<Paragraph>攻击：影响单次攻击的伤害。</Paragraph>
+						<Paragraph>防御：影响人物初始血量。</Paragraph>
+						<Paragraph>精准：影响人物攻击命中率。一旦命中，即可立即再尝试一次攻击；若未命中，攻击结束。</Paragraph>
+						<Paragraph>闪避：影响敌方对自己的命中率。一旦闪避成功，敌人的连击即被打断。</Paragraph>
+						<Paragraph>复活血量：复活时，每个人的生命将变成其防御力乘上该指标。该指标可以控制战斗是迅速分胜负还是鏖战。</Paragraph>
+						<Paragraph>战力：对人物/团队的战斗力进行的大致评估。团队的战力受到默契度影响，因此不是人物战力的简单相加，人物战力和团队战力无可比性。</Paragraph>
+					</RichTextBlock.Blocks>
+				</RichTextBlock>
+			</PivotItem>
+		</Pivot>
+	</NavigationView>
+</Page>
