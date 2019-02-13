@@ -1,13 +1,12 @@
 ﻿' https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x804 上介绍了“空白页”项模板
-Imports 小说助手.战斗模拟
-
+Imports 小说助手.战斗模拟, Windows.Storage, Windows.Storage.AccessCache.StorageApplicationPermissions
 ''' <summary>
 ''' 可用于自身或导航至 Frame 内部的空白页。
 ''' </summary>
 Public NotInheritable Class MainPage
 	Inherits Page
 	ReadOnly 战场 As New 战场
-	Private 删除焦点 As ListView
+	Private 删除焦点 As ListView, 人物文件夹 As StorageFolder
 
 	Private Sub 创建团队_Click(sender As Object, e As RoutedEventArgs) Handles 创建团队.Click
 		Static a As 团队, 错误提示 As New Flyout With {.Content = New TextBlock With {.Text = "默契度必须在0~255之间"}}
@@ -86,7 +85,7 @@ Public NotInheritable Class MainPage
 		End With
 	End Sub
 
-	Private Sub MainPage_Loaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
+	Private Async Sub MainPage_Loaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
 		'Dim a As New 团队, b As New 成员
 		团队列表.ItemsSource = 战场.团队列表
 		所属团队.ItemsSource = 战场.团队列表
@@ -97,6 +96,12 @@ Public NotInheritable Class MainPage
 		当前回合.SetBinding(TextBox.TextProperty, 战场.当前回合Binding)
 		战斗记录.ItemsSource = 战场.战斗记录
 		'成员列表.SetBinding(ItemsControl.ItemsSourceProperty, New Binding With {.Source = 团队列表, .Path = New PropertyPath("SelectedItem.成员列表")})
+		If MostRecentlyUsedList.ContainsItem("人物文件夹") Then
+			人物文件夹 = Await MostRecentlyUsedList.GetItemAsync("人物文件夹")
+			路径.Text = 人物文件夹.Path
+			文件夹中的人物.ItemsSource = Await 人物文件夹.GetItemsAsync
+			新建人物.IsEnabled = True
+		End If
 	End Sub
 
 	Private Sub 团队列表_SelectionChanged(sender As Object, e As SelectionChangedEventArgs) Handles 团队列表.SelectionChanged
@@ -158,7 +163,7 @@ Public NotInheritable Class MainPage
 	End Sub
 
 	Private Sub 导航框架_SelectionChanged(sender As NavigationView, args As NavigationViewSelectionChangedEventArgs) Handles 导航框架.SelectionChanged
-		Static 功能集 As New Dictionary(Of NavigationViewItem, FrameworkElement) From {{战斗模拟NavigationViewItem, 战斗模拟Pivot}, {人物设定NavigationViewItem, 人物设定Grid}}, 当前功能 As Pivot = 战斗模拟Pivot
+		Static 功能集 As New Dictionary(Of NavigationViewItem, FrameworkElement) From {{战斗模拟NavigationViewItem, 战斗模拟Pivot}, {人物设定NavigationViewItem, 人物设定Grid}}, 当前功能 As FrameworkElement = 战斗模拟Pivot
 		导航框架.Header = DirectCast(args.SelectedItem, NavigationViewItem).Content
 		当前功能.Visibility = Visibility.Collapsed
 		当前功能 = 功能集(args.SelectedItem)
@@ -177,5 +182,22 @@ Public NotInheritable Class MainPage
 			Dim b As 成员 = 成员列表.SelectedItem
 			If b IsNot Nothing Then b.战力改变()
 		End If
+	End Sub
+
+	Private Async Sub 选择文件夹_Click(sender As Object, e As RoutedEventArgs) Handles 选择文件夹.Click
+		人物文件夹 = Await (New Pickers.FolderPicker).PickSingleFolderAsync
+		If 人物文件夹 IsNot Nothing Then
+			Dim a As IAsyncOperation(Of IReadOnlyList(Of IStorageItem)) = 人物文件夹.GetItemsAsync
+			路径.Text = 人物文件夹.Path
+			MostRecentlyUsedList.AddOrReplace("人物文件夹", 人物文件夹)
+			文件夹中的人物.ItemsSource = Await a
+			新建人物.IsEnabled = True
+		End If
+	End Sub
+
+	Private Async Sub 新建人物_确定_Click(sender As Object, e As RoutedEventArgs) Handles 新建人物_确定.Click
+		Dim a As StorageFile = Await 人物文件夹.CreateFileAsync(名字.Text & ".人物", CreationCollisionOption.OpenIfExists)
+		文件夹中的人物.ItemsSource = Await 人物文件夹.CreateFileQueryWithOptions(New Search.QueryOptions(Search.CommonFileQuery.DefaultQuery, {".人物"})).GetFilesAsync
+		文件夹中的人物.SelectedItem = a
 	End Sub
 End Class
