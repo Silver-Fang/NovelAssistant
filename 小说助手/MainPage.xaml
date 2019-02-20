@@ -13,7 +13,7 @@
 			<NavigationViewItem x:Name="人物设定NavigationViewItem" Content="人物设定" Icon="ContactInfo"/>
 		</NavigationView.MenuItems>
 		<Grid>
-			<Pivot x:Name="战斗模拟Pivot" Visibility="Collapsed">
+			<Pivot x:Name="战斗模拟Pivot" Visibility="Visible" FontFamily="Segoe UI">
 			<PivotItem Header="团队成员">
 				<Grid>
 					<Grid.ColumnDefinitions>
@@ -21,7 +21,7 @@
 						<ColumnDefinition/>
 						<ColumnDefinition/>
 					</Grid.ColumnDefinitions>
-					<ListView x:Name="团队列表" Header="团队列表" Grid.Column="0" Margin="10" BorderBrush="Black" BorderThickness="1"/>
+					<ListView x:Name="团队列表" Header="团队列表" Grid.Column="0" Margin="8" BorderBrush="Black" BorderThickness="1" Padding="8"/>
 					<Grid Grid.Column="1">
 						<Grid.RowDefinitions>
 							<RowDefinition Height="Auto"/>
@@ -38,18 +38,22 @@
 								<RowDefinition/>
 								<RowDefinition/>
 							</Grid.RowDefinitions>
-							<TextBox x:Name="团队名" Header="团队名" Grid.Column="0" Grid.Row="0" Margin="10"/>
-							<TextBox x:Name="默契度" Header="默契度" Grid.Column="1" Grid.Row="0" Margin="10"/>
-							<Button x:Name="创建团队" Content="创建团队" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10"/>
-							<Button x:Name="删除团队" Content="删除团队" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10"/>
-							<Button x:Name="团队复活" Content="团队复活" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10"/>
-							<Button x:Name="团队全灭" Content="团队全灭" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10"/>
-							<TextBlock Margin="10" Text="团队战力" Grid.Column="0" Grid.Row="3"/>
-							<TextBlock Margin="10" x:Name="团队战力" Grid.Column="1" Grid.Row="3"/>
+								<TextBox x:Name="团队名" Header="团队名" Grid.Column="0" Grid.Row="0" Margin="8"/>
+								<Button x:Name="载入人物" Content="载入人物" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+								<Button x:Name="创建团队" Content="创建团队" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="8"/>
+							<Button x:Name="删除团队" Content="删除团队" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="8"/>
+							<Button x:Name="团队复活" Content="团队复活" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="8"/>
+							<Button x:Name="团队全灭" Content="团队全灭" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="8"/>
+							<TextBlock Margin="8" Text="团队战力" Grid.Column="0" Grid.Row="3"/>
+								<TextBlock Margin="8" x:Name="团队战力" Grid.Column="1" Grid.Row="3"/>
 						</Grid>
-						<ListView x:Name="成员列表" Header="成员列表" Grid.Row="1" Margin="10" BorderThickness="1" BorderBrush="Black" ItemsSource="{Binding Source=团队列表, Path=SelectedItem.成员列表}"/>
+						<ListView x:Name="成员列表" Header="成员列表" Grid.Row="1" Margin="8" BorderThickness="1" BorderBrush="Black" Padding="8"/>
 					</Grid>
 					<Grid Grid.Column="2">
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition/>
+								<ColumnDefinition/>
+							</Grid.ColumnDefinitions>
 						<Grid.RowDefinitions>
 							<RowDefinition Height="Auto"/>
 							<RowDefinition Height="Auto"/>
@@ -60,39 +64,32 @@
 							<RowDefinition Height="Auto"/>
 							<RowDefinition Height="Auto"/>
 						</Grid.RowDefinitions>
-						<TextBox x:Name="成员名" Header="成员名" Grid.Row="0" Margin="10"/>
-						<ComboBox Margin="10" x:Name="所属团队" Header="所属团队" Grid.Row="1" HorizontalAlignment="Stretch"/>
-						<TextBox x:Name="攻击" Header="攻击" Grid.Row="2" Margin="10"/>
-						<TextBox x:Name="防御" Header="防御" Grid.Row="3" Margin="10"/>
-						<TextBox x:Name="精准" Header="精准" Grid.Row="4" Margin="10"/>
-						<TextBox x:Name="闪避" Header="闪避" Grid.Row="5" Margin="10"/>
-						<TextBox x:Name="生命" Header="生命" Grid.Row="6" Margin="10"/>
-						<Grid Grid.Row="7">
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition/>
-								<ColumnDefinition/>
-							</Grid.ColumnDefinitions>
-							<Grid.RowDefinitions>
-								<RowDefinition/>
-								<RowDefinition/>
-								<RowDefinition/>
-							</Grid.RowDefinitions>
-							<Button x:Name="添加成员" Content="添加成员" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Stretch" Margin="10"/>
-							<Button x:Name="删除成员" Content="删除成员" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Stretch" Margin="10"/>
-							<Button x:Name="成员复活" Content="成员复活" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Stretch" Margin="10"/>
-							<Button x:Name="成员死亡" Content="成员死亡" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" Margin="10"/>
-							<TextBlock Margin="10" Text="个人战力" Grid.Column="0" Grid.Row="2"/>
-							<TextBlock Margin="10" x:Name="个人战力" Grid.Column="1" Grid.Row="2"/>
+						<TextBox x:Name="成员名" Header="成员名" Grid.Row="0" Grid.Column="0" Margin="8"/>
+						<ComboBox Margin="8" x:Name="所属团队" Header="所属团队" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Stretch"/>
+						<TextBox x:Name="攻击" Header="攻击" Grid.Column="0" Grid.Row="1" Margin="8"/>
+						<TextBox x:Name="防御" Header="防御" Grid.Column="1" Grid.Row="1" Margin="8"/>
+						<TextBox x:Name="精准" Header="精准" Grid.Column="0" Grid.Row="2" Margin="8"/>
+							<TextBox x:Name="闪避" Header="闪避" Grid.Column="1" Grid.Row="2" Margin="8"/>
+							<TextBox x:Name="战斗等级" Header="等级" Grid.Column="0" Grid.Row="3" Margin="8"/>
+							<TextBox x:Name="战斗谋略" Header="谋略" Grid.Column="1" Grid.Row="3" Margin="8"/>
+							<TextBox x:Name="生命" Header="生命" Grid.Row="4" Margin="8" Grid.ColumnSpan="2"/>
+							<Button x:Name="添加成员" Content="添加成员" Grid.Column="0" Grid.Row="5" HorizontalAlignment="Stretch" Margin="8"/>
+							<Button x:Name="删除成员" Content="删除成员" Grid.Column="1" Grid.Row="5" HorizontalAlignment="Stretch" Margin="8"/>
+							<Button x:Name="成员复活" Content="成员复活" Grid.Column="0" Grid.Row="6" HorizontalAlignment="Stretch" Margin="8"/>
+							<Button x:Name="成员死亡" Content="成员死亡" Grid.Column="1" Grid.Row="6" HorizontalAlignment="Stretch" Margin="8"/>
+							<TextBlock Margin="8" Text="个人战力" Grid.Column="0" Grid.Row="7"/>
+							<TextBlock Margin="8" x:Name="个人战力" Grid.Column="1" Grid.Row="7"/>
 						</Grid>
-					</Grid>
 				</Grid>
 			</PivotItem>
 			<PivotItem Header="战斗记录">
 				<Grid>
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition Width="Auto"/>
-						<ColumnDefinition/>
-					</Grid.ColumnDefinitions>
+							<ColumnDefinition/>
+							<ColumnDefinition/>
+							<ColumnDefinition/>
+						</Grid.ColumnDefinitions>
 					<Grid Grid.Column="0">
 						<Grid.RowDefinitions>
 							<RowDefinition Height="Auto"/>
@@ -102,18 +99,67 @@
 							<RowDefinition Height="Auto"/>
 							<RowDefinition Height="Auto"/>
 						</Grid.RowDefinitions>
-						<Button x:Name="战一回合" Content="战一回合" Grid.Row="0" Margin="10"/>
-						<Button x:Name="不死不休" Content="不死不休" Grid.Row="1" Margin="10"/>
-						<Button x:Name="清空记录" Content="清空记录" Grid.Row="2" Margin="10"/>
-						<Button x:Name="全体复活" Content="全体复活" Grid.Row="3" Margin="10"/>
-						<TextBox x:Name="复活血量" Header="复活血量" Grid.Row="4" Margin="10"/>
-						<TextBox x:Name="当前回合" Header="当前回合" Grid.Row="5" Margin="10"/>
+						<Button x:Name="战一回合" Content="战一回合" Grid.Row="0" Margin="8"/>
+						<Button x:Name="不死不休" Content="不死不休" Grid.Row="1" Margin="8"/>
+						<Button x:Name="清空记录" Content="清空记录" Grid.Row="2" Margin="8"/>
+						<Button x:Name="全体复活" Content="全体复活" Grid.Row="3" Margin="8"/>
+						<TextBox x:Name="复活血量" Header="复活血量" Grid.Row="4" Margin="8"/>
+						<TextBox x:Name="当前回合" Header="当前回合" Grid.Row="5" Margin="8"/>
 					</Grid>
-					<ListBox x:Name="战斗记录" Grid.Column="1"/>
-				</Grid>
+						<ListView x:Name="回合记录" Header="回合记录" Grid.Column="1" Margin="8" BorderBrush="Black" BorderThickness="1" Padding="8"/>
+						<Grid Grid.Column="2">
+							<Grid.RowDefinitions>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition/>
+								<RowDefinition/>
+							</Grid.RowDefinitions>
+							<Grid Grid.Row="0">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="Auto"/>
+									<ColumnDefinition Width="Auto"/>
+									<ColumnDefinition Width="Auto"/>
+								</Grid.ColumnDefinitions>
+								<TextBlock x:Name="回合数" Grid.Column="0" Text="第0回合" Margin="8"/>
+								<TextBlock Grid.Column="1" Text="总伤害：" Margin="8"/>
+								<TextBlock Grid.Column="2" x:Name="回合总伤害" Margin="8"/>
+							</Grid>
+							<ListView Header="输出排行" x:Name="输出排行" Margin="8" Padding="8" BorderBrush="Black" BorderThickness="1" Grid.Row="1"/>
+							<ListView BorderBrush="Black" BorderThickness="1" Grid.Row="2" Header="受伤排行" Margin="8" Padding="8" x:Name="受伤排行"/>
+						</Grid>
+						<Grid Grid.Column="3">
+							<Grid.RowDefinitions>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition/>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition/>
+							</Grid.RowDefinitions>
+							<Grid Grid.Row="0">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="Auto"/>
+									<ColumnDefinition Width="Auto"/>
+									<ColumnDefinition Width="Auto"/>
+								</Grid.ColumnDefinitions>
+								<TextBlock x:Name="输出人" Text="输出人" Grid.Column="0" Margin="8"/>
+								<TextBlock Text="总输出：" Grid.Column="1" Margin="8"/>
+								<TextBlock Grid.Column="2" x:Name="个人总输出" Margin="8"/>
+							</Grid>
+							<ListView Header="输出目标排行" x:Name="输出目标排行" Margin="8" Padding="8" BorderBrush="Black" BorderThickness="1" Grid.Row="1"/>
+							<Grid Grid.Row="2">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="Auto"/>
+									<ColumnDefinition Width="Auto"/>
+									<ColumnDefinition Width="Auto"/>
+								</Grid.ColumnDefinitions>
+								<TextBlock x:Name="受伤人" Text="受伤人" Grid.Column="0" Margin="8" FontFamily="Segoe UI"/>
+								<TextBlock Text="总受伤：" Grid.Column="1" Margin="8"/>
+								<TextBlock Grid.Column="2" x:Name="个人总受伤" Margin="8"/>
+							</Grid>
+							<ListView BorderBrush="Black" BorderThickness="1" Grid.Row="3" Header="伤害来源排行" Margin="8" Padding="8" x:Name="伤害来源排行"/>
+						</Grid>
+					</Grid>
 			</PivotItem>
 			<PivotItem Header="使用说明">
-				<RichTextBlock>
+				<RichTextBlock Margin="8">
 					<RichTextBlock.Blocks>
 						<Paragraph>添加/删除成员和团队的功能可望文生义。需注意的是以下指标对战斗的影响：</Paragraph>
 						<Paragraph>默契度：影响自己团队内的队员配合和对对方配合的破坏。具体来说，高默契团队倾向于集火低默契团队中高火力的脆皮，而低默契团队则往往将他们的攻击分散到高默契团队中低火力的肉盾上。因而其它指标相同时，默契高的团队胜率高。</Paragraph>
@@ -127,7 +173,7 @@
 				</RichTextBlock>
 			</PivotItem>
 			</Pivot>
-			<Grid x:Name="人物设定Grid" Visibility="Visible">
+			<Grid x:Name="人物设定Grid" Visibility="Collapsed">
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="Auto"/>
 					<ColumnDefinition/>
@@ -138,7 +184,7 @@
 						<RowDefinition Height="Auto"/>
 						<RowDefinition/>
 					</Grid.RowDefinitions>
-					<TextBlock x:Name="路径" Grid.Row="0" Margin="10"/>
+					<TextBlock x:Name="路径" Grid.Row="0" Margin="8"/>
 					<Grid Grid.Row="1">
 						<Grid.ColumnDefinitions>
 							<ColumnDefinition/>
@@ -146,8 +192,8 @@
 							<ColumnDefinition/>
 							<ColumnDefinition/>
 						</Grid.ColumnDefinitions>
-						<Button x:Name="选择文件夹" Content="选择文件夹" Grid.Column="0" Margin="10"/>
-						<Button x:Name="新建人物" Content="新建人物" Grid.Column="1" Margin="10" IsEnabled="False">
+						<Button x:Name="选择文件夹" Content="选择文件夹" Grid.Column="0" Margin="8"/>
+						<Button x:Name="新建人物" Content="新建人物" Grid.Column="1" Margin="8" IsEnabled="False">
 							<Button.Flyout>
 								<Flyout>
 									<Grid>
@@ -155,21 +201,22 @@
 											<RowDefinition/>
 											<RowDefinition/>
 										</Grid.RowDefinitions>
-										<TextBox x:Name="名字" Header="名字" Grid.Row="0" Margin="10"/>
-										<Button x:Name="新建人物_确定" Grid.Row="1" Content="确定" Margin="10"/>
+										<TextBox x:Name="名字" Header="名字" Grid.Row="0" Margin="8"/>
+										<Button x:Name="新建人物_确定" Grid.Row="1" Content="确定" Margin="8"/>
 									</Grid>
 								</Flyout>
 							</Button.Flyout>
 						</Button>
-						<Button Content="保存人物" Grid.Column="2" Margin="10" IsEnabled="False"/>
-						<Button Content="删除人物" Grid.Column="3" Margin="10" IsEnabled="False"/>
+						<Button x:Name="保存人物" Content="保存人物" Grid.Column="2" Margin="8" IsEnabled="False"/>
+						<Button x:Name="删除人物" Content="删除人物" Grid.Column="3" Margin="8" IsEnabled="False"/>
 					</Grid>
-					<ListView x:Name="文件夹中的人物" Header="文件夹中的人物" Grid.Row="2" Margin="10"/>
+					<ListView x:Name="文件夹中的人物" Header="文件夹中的人物" Grid.Row="2" Margin="8"/>
 				</Grid>
 				<Pivot Grid.Column="1">
 					<PivotItem Header="战斗属性">
 						<Grid>
 							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="Auto"/>
 								<ColumnDefinition Width="Auto"/>
 								<ColumnDefinition Width="Auto"/>
 							</Grid.ColumnDefinitions>
@@ -185,17 +232,27 @@
 								<RowDefinition Height="Auto"/>
 								<RowDefinition Height="Auto"/>
 							</Grid.RowDefinitions>
-							<TextBox Header="攻击" Grid.Column="0" Grid.Row="0" Margin="10"/>
-							<TextBox Header="防御" Grid.Column="0" Grid.Row="1" Margin="10"/>
-							<TextBox Header="精准" Grid.Column="0" Grid.Row="2" Margin="10"/>
-							<TextBox Header="闪避" Grid.Column="0" Grid.Row="3" Margin="10"/>
-							<TextBox Header="随机上限" Grid.Column="1" Grid.Row="0" Margin="10"/>
-							<Button Content="随机生成" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10"/>
-							<TextBox Header="等级" Grid.Column="1" Grid.Row="2" Margin="10"/>
-							<TextBox Header="合作能力" Grid.Column="1" Grid.Row="3" Margin="10"/>
-							<TextBox Header="技能原型" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" Margin="10"/>
+							<TextBox x:Name="攻击系数" Header="攻击系数" Grid.Column="0" Grid.Row="0" Margin="8"/>
+							<TextBox x:Name="防御系数" Header="防御系数" Grid.Column="0" Grid.Row="1" Margin="8"/>
+							<TextBox x:Name="精准系数" Header="精准系数" Grid.Column="0" Grid.Row="2" Margin="8"/>
+							<TextBox x:Name="闪避系数" Header="闪避系数" Grid.Column="0" Grid.Row="3" Margin="8"/>
+								<TextBox x:Name="随机上限" Header="随机上限" Grid.Column="1" Grid.Row="0" Margin="8" FontFamily="Segoe UI"/>
+								<Button x:Name="随机生成" Content="随机生成" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="8"/>
+							<TextBox x:Name="设定等级" Header="等级" Grid.Column="1" Grid.Row="2" Margin="8"/>
+							<TextBox x:Name="设定谋略" Header="谋略" Grid.Column="1" Grid.Row="3" Margin="8"/>
+							<TextBox x:Name="设定原型" Header="设定原型" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" Margin="8"/>
 							</Grid>
-							<ListView Header="装备列表" Grid.Column="2" Margin="10"/>
+							<ListView x:Name="装备列表" Header="装备列表" Grid.Column="1" Margin="8"/>
+							<Grid Grid.Column="2">
+								<Grid.RowDefinitions>
+									<RowDefinition Height="Auto"/>
+									<RowDefinition Height="Auto"/>
+									<RowDefinition Height="Auto"/>
+								</Grid.RowDefinitions>
+								<TextBox x:Name="新装备名" Header="新装备名" Margin="8" Grid.Row="0"/>
+								<Button x:Name="新建装备" Content="新建装备" Margin="8" Grid.Row="1"/>
+								<Button x:Name="删除装备" Content="删除装备" Margin="8" Grid.Row="2"/>
+							</Grid>
 						</Grid>
 					</PivotItem>
 				</Pivot>

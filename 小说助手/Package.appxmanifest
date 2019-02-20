@@ -20,6 +20,19 @@
         </uap:DefaultTile>
         <uap:SplashScreen Image="Assets\SplashScreen.png" />
       </uap:VisualElements>
+      <Extensions>
+        <uap:Extension Category="windows.fileTypeAssociation">
+          <uap:FileTypeAssociation Name="ndfigure">
+            <uap:SupportedFileTypes>
+              <uap:FileType>.人物</uap:FileType>
+            </uap:SupportedFileTypes>
+            <uap:DisplayName>人物文件</uap:DisplayName>
+            <uap:InfoTip>小说助手人物文件</uap:InfoTip>
+            <uap:EditFlags OpenIsSafe="true"/>
+            <uap:Logo>人物图标.png</uap:Logo>
+          </uap:FileTypeAssociation>
+        </uap:Extension>
+      </Extensions>
     </Application>
   </Applications>
 </Package>

@@ -141,8 +141,16 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
-    <Compile Include="战斗模拟.vb" />
-    <Compile Include="超级列表.vb" />
+    <Compile Include="人物设定.vb" />
+    <Compile Include="战斗模拟\团队.vb" />
+    <Compile Include="战斗模拟\成员.vb" />
+    <Compile Include="战斗模拟\战场.vb" />
+    <Compile Include="战斗模拟\战斗单位.vb" />
+    <Compile Include="战斗模拟\战斗回合.vb" />
+    <Compile Include="战斗模拟\战斗记录.vb" />
+    <Compile Include="战斗模拟\用户界面.vb" />
+    <Compile Include="虚拟界面.vb" />
+    <Compile Include="数据类型.vb" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -204,6 +212,7 @@
     <Content Include="Assets\Square44x44Logo.scale-200.png" />
     <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
+    <Content Include="人物图标.png" />
     <None Include="Package.StoreAssociation.xml" />
   </ItemGroup>
   <ItemGroup>
