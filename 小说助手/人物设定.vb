@@ -99,8 +99,8 @@ Namespace 人物设定
 	End Module
 	Class 用户界面
 		Private 人物文件夹 As StorageFolder
-		ReadOnly 路径 As TextBlock, 新建人物 As Control, 名字 As TextBox, 新装备名 As TextBox
-		WithEvents 选择文件夹 As ButtonBase, 新建人物_确定 As ButtonBase, 文件夹中的人物 As Selector, 保存人物 As ButtonBase, 删除人物 As ButtonBase, 随机生成 As ButtonBase, 装备列表 As Selector, 新建装备 As ButtonBase, 删除装备 As ButtonBase, 攻击系数 As TextBox, 防御系数 As TextBox, 精准系数 As TextBox, 闪避系数 As TextBox, 随机上限 As TextBox, 等级 As TextBox, 谋略 As TextBox, 设定原型 As TextBox
+		ReadOnly 路径 As TextBlock, 新建人物 As Control, 名字 As TextBox, 新装备名 As TextBox, 删除人物 As ButtonBase
+		WithEvents 选择文件夹 As ButtonBase, 新建人物_确定 As ButtonBase, 文件夹中的人物 As Selector, 保存人物 As ButtonBase, 随机生成 As ButtonBase, 装备列表 As Selector, 新建装备 As ButtonBase, 删除装备 As ButtonBase, 攻击系数 As TextBox, 防御系数 As TextBox, 精准系数 As TextBox, 闪避系数 As TextBox, 随机上限 As TextBox, 等级 As TextBox, 谋略 As TextBox, 设定原型 As TextBox, 确认删除 As ButtonBase
 		Private Function 获取文件夹中的人物文件() As IAsyncOperation(Of IReadOnlyList(Of StorageFile))
 			Return 人物文件夹.CreateFileQueryWithOptions(New Search.QueryOptions(Search.CommonFileQuery.DefaultQuery, {".人物"})).GetFilesAsync
 		End Function
@@ -118,7 +118,7 @@ Namespace 人物设定
 				新建人物.IsEnabled = True
 			End If
 		End Sub
-		Sub New(路径 As TextBlock, 文件夹中的人物 As Selector, 新建人物 As Control, 选择文件夹 As ButtonBase, 新建人物_确定 As ButtonBase, 名字 As TextBox, 攻击系数 As TextBox, 防御系数 As TextBox, 精准系数 As TextBox, 闪避系数 As TextBox, 随机上限 As TextBox, 等级 As TextBox, 谋略 As TextBox, 设定原型 As TextBox, 装备列表 As ItemsControl, 保存人物 As ButtonBase, 删除人物 As ButtonBase, 随机生成 As ButtonBase, 新装备名 As TextBox, 新建装备 As ButtonBase, 删除装备 As ButtonBase)
+		Sub New(路径 As TextBlock, 文件夹中的人物 As Selector, 新建人物 As Control, 选择文件夹 As ButtonBase, 新建人物_确定 As ButtonBase, 名字 As TextBox, 攻击系数 As TextBox, 防御系数 As TextBox, 精准系数 As TextBox, 闪避系数 As TextBox, 随机上限 As TextBox, 等级 As TextBox, 谋略 As TextBox, 设定原型 As TextBox, 装备列表 As ItemsControl, 保存人物 As ButtonBase, 删除人物 As ButtonBase, 随机生成 As ButtonBase, 新装备名 As TextBox, 新建装备 As ButtonBase, 删除装备 As ButtonBase, 确认删除 As ButtonBase)
 			Me.路径 = 路径
 			Me.文件夹中的人物 = 文件夹中的人物
 			Me.新建人物 = 新建人物
@@ -140,6 +140,7 @@ Namespace 人物设定
 			Me.新装备名 = 新装备名
 			Me.新建装备 = 新建装备
 			Me.删除装备 = 删除装备
+			Me.确认删除 = 确认删除
 			初始化()
 		End Sub
 		Private Async Sub 选择文件夹_Click(sender As Object, e As RoutedEventArgs) Handles 选择文件夹.Click
@@ -158,7 +159,10 @@ Namespace 人物设定
 			Property 未保存 As Boolean = False
 			ReadOnly Property 人物 As 人物
 				Get
-					If i人物 Is Nothing Then i人物 = New BinaryReader(文件.OpenStreamForReadAsync.Result).Read人物
+					Try
+						If i人物 Is Nothing Then i人物 = New BinaryReader(文件.OpenStreamForReadAsync.Result).Read人物
+					Catch ex As AggregateException
+					End Try
 					If i人物 Is Nothing Then i人物 = New 人物(ToString)
 					Return i人物
 				End Get
@@ -251,10 +255,12 @@ Namespace 人物设定
 			保存人物.IsEnabled = False
 		End Sub
 
-		Private Sub 删除人物_Click() Handles 删除人物.Click
+		Private Sub 确认删除_Click() Handles 确认删除.Click
 			With 文件夹中的人物
-				Call DirectCast(.SelectedItem, 人物文件).文件.DeleteAsync()
-				.Items.Remove(.SelectedItem)
+				If .SelectedItem IsNot Nothing Then
+					Call DirectCast(.SelectedItem, 人物文件).文件.DeleteAsync()
+					.Items.Remove(.SelectedItem)
+				End If
 			End With
 		End Sub
 

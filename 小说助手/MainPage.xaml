@@ -208,10 +208,10 @@
 							</Button.Flyout>
 						</Button>
 						<Button x:Name="保存人物" Content="保存人物" Grid.Column="2" Margin="8" IsEnabled="False"/>
-						<Button Content="删除人物" Grid.Column="3" Margin="8" IsEnabled="False">
+						<Button x:Name="删除人物" Content="删除人物" Grid.Column="3" Margin="8" IsEnabled="False">
 							<Button.Flyout>
 								<Flyout>
-									<Button x:Name="删除人物" Content="确认删除？"/>
+									<Button x:Name="确认删除" Content="确认删除？"/>
 								</Flyout>
 							</Button.Flyout>
 						</Button>

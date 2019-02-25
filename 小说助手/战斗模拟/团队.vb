@@ -2,9 +2,9 @@
 Namespace 战斗模拟
 	Interface I团队成员
 		Inherits I可复活, I有战力, I改名提醒
-		ReadOnly Property 存活 As Boolean
 		Sub 死亡(Optional 提醒战力变化 As Boolean = True)
 		Function 安排战斗计划(敌人 As IReadOnlyCollection(Of I团队成员)) As Object
+		ReadOnly Property 存活 As Boolean
 	End Interface
 	Interface I有成员列表
 		ReadOnly Property 成员列表 As 实时更新列表(Of I团队成员)
@@ -61,7 +61,7 @@ Namespace 战斗模拟
 			Next
 			Dim d As New Collection(Of I战场统计)
 			For Each c As I团队成员 In i成员列表
-				d.Add(c.安排战斗计划(a))
+				If c.存活 Then d.Add(c.安排战斗计划(a))
 			Next
 			Return d
 		End Function

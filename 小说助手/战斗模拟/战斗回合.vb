@@ -1,17 +1,22 @@
 ﻿Imports 小说助手.数据类型
 Namespace 战斗模拟
 	Interface I回合统计
-		Inherits I统计树节点(Of I有名称, UShort)
+		Inherits I统计树节点(Of I回合成员, UShort)
 		Sub 合并(合并项 As I回合统计)
 		ReadOnly Property 统计表 As IReadOnlyCollection(Of I回合条目)
-		Function 添加条目(目标 As I有名称, 伤害 As UShort) As I回合统计
+		Function 添加条目(目标 As I回合成员, 伤害 As UShort) As I回合统计
+		Property 死 As Boolean
 	End Interface
 	Interface I回合条目
-		Inherits I统计树节点(Of I有名称, UShort)
+		Inherits I统计树节点(Of I回合成员, UShort)
+	End Interface
+	Interface I回合成员
+		Inherits I有名称
+		ReadOnly Property 生命 As ULong
 	End Interface
 	Class 战斗回合
 		Implements I界面回合, I战场回合
-		ReadOnly i输出统计 As New Dictionary(Of I有名称, I回合统计), i受伤统计 As New Dictionary(Of I有名称, I回合统计)
+		ReadOnly i输出统计 As New Dictionary(Of I回合成员, I回合统计), i受伤统计 As New Dictionary(Of I回合成员, I回合统计)
 		Public ReadOnly Property 键 As Byte Implements I统计树节点(Of Byte, UShort).键
 
 		Public Property 值 As UShort Implements I统计树节点(Of Byte, UShort).值
@@ -29,7 +34,7 @@ Namespace 战斗模拟
 		Overrides Function ToString() As String Implements I统计树节点(Of Byte, UShort).ToString
 			Return "第" & 键 & "回合，总伤害：" & 值
 		End Function
-		Protected Overridable Function 新统计(键 As I有名称) As I回合统计
+		Protected Overridable Function 新统计(键 As I回合成员) As I回合统计
 			Return New 伤害统计(键)
 		End Function
 		''' <summary>
@@ -50,6 +55,9 @@ Namespace 战斗模拟
 						Else
 							i受伤统计.Add(b.键, 新统计(b.键).添加条目(a.键, b.值))
 						End If
+					Next
+					For Each b As I回合统计 In i受伤统计.Values
+						If b.值 >= b.键.生命 Then b.死 = True
 					Next
 					值 += a.值
 				End If

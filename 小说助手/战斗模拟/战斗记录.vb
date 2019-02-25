@@ -3,14 +3,11 @@
 Namespace 战斗模拟
 	Class 统计条目
 		Implements I界面条目, I回合条目
+		Friend 键 As I有名称, 值 As UShort
 		Sub New(键 As I有名称, 值 As UShort)
 			Me.键 = 键
 			Me.值 = 值
 		End Sub
-
-		Public ReadOnly Property 键 As I有名称 Implements I统计树节点(Of I有名称, UShort).键
-
-		Public Property 值 As UShort Implements I统计树节点(Of I有名称, UShort).值
 
 		Private ReadOnly Property I统计树节点_键 As I界面成员 Implements I统计树节点(Of I界面成员, UShort).键
 			Get
@@ -19,6 +16,18 @@ Namespace 战斗模拟
 		End Property
 
 		Private ReadOnly Property I统计树节点_值 As UShort Implements I统计树节点(Of I界面成员, UShort).值
+			Get
+				Return 值
+			End Get
+		End Property
+
+		Private ReadOnly Property I统计树节点_键1 As I回合成员 Implements I统计树节点(Of I回合成员, UShort).键
+			Get
+				Return 键
+			End Get
+		End Property
+
+		Private ReadOnly Property I统计树节点_值1 As UShort Implements I统计树节点(Of I回合成员, UShort).值
 			Get
 				Return 值
 			End Get
@@ -39,6 +48,8 @@ Namespace 战斗模拟
 		Sub New(键 As I有名称)
 			MyBase.New(键, 0)
 		End Sub
+
+		Public Property 死 As Boolean = False Implements I回合统计.死
 
 		Private ReadOnly Property I统计树节点_键1 As I战场成员 Implements I统计树节点(Of I战场成员, UShort).键
 			Get
@@ -90,7 +101,7 @@ Namespace 战斗模拟
 			值 += 伤害
 		End Sub
 
-		Public Function 添加条目(目标 As I有名称, 伤害 As UShort) As I回合统计 Implements I回合统计.添加条目
+		Public Function 添加条目(目标 As I回合成员, 伤害 As UShort) As I回合统计 Implements I回合统计.添加条目
 			If i统计表.ContainsKey(目标) Then
 				i统计表(目标).值 += 伤害
 			Else
@@ -98,6 +109,9 @@ Namespace 战斗模拟
 			End If
 			值 += 伤害
 			Return Me
+		End Function
+		Public Overrides Function ToString() As String
+			Return MyBase.ToString() & If(死, "，被杀", "")
 		End Function
 	End Class
 End Namespace
