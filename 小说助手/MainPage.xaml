@@ -13,7 +13,7 @@
 			<NavigationViewItem x:Name="人物设定NavigationViewItem" Content="人物设定" Icon="ContactInfo"/>
 		</NavigationView.MenuItems>
 		<Grid>
-			<Pivot x:Name="战斗模拟Pivot" Visibility="Visible" FontFamily="Segoe UI">
+			<Pivot x:Name="战斗模拟Pivot" Visibility="Collapsed"  FontFamily="Segoe UI">
 			<PivotItem Header="团队成员">
 				<Grid>
 					<Grid.ColumnDefinitions>
@@ -161,12 +161,12 @@
 			<PivotItem Header="使用说明">
 				<RichTextBlock Margin="8">
 					<RichTextBlock.Blocks>
-						<Paragraph>添加/删除成员和团队的功能可望文生义。需注意的是以下指标对战斗的影响：</Paragraph>
-						<Paragraph>默契度：影响自己团队内的队员配合和对对方配合的破坏。具体来说，高默契团队倾向于集火低默契团队中高火力的脆皮，而低默契团队则往往将他们的攻击分散到高默契团队中低火力的肉盾上。因而其它指标相同时，默契高的团队胜率高。</Paragraph>
-						<Paragraph>攻击：影响单次攻击的伤害。</Paragraph>
+							<Paragraph>添加/删除成员和团队的功能可望文生义。需注意的是以下指标对战斗的影响：</Paragraph>
+							<Paragraph>攻击：影响单次攻击的伤害。</Paragraph>
 						<Paragraph>防御：影响人物初始血量。</Paragraph>
 						<Paragraph>精准：影响人物攻击命中率。一旦命中，即可立即再尝试一次攻击；若未命中，攻击结束。</Paragraph>
 						<Paragraph>闪避：影响敌方对自己的命中率。一旦闪避成功，敌人的连击即被打断。</Paragraph>
+							<Paragraph>谋略：影响攻击目标的选择，战斗的策略。谋略越高，越倾向于攻击敌人的高输出脆皮。3个以上团队战时，谋略高则倾向于攻击战力最高的团队。</Paragraph>
 						<Paragraph>复活血量：复活时，每个人的生命将变成其防御力乘上该指标。该指标可以控制战斗是迅速分胜负还是鏖战。</Paragraph>
 						<Paragraph>战力：对人物/团队的战斗力进行的大致评估。团队的战力受到默契度影响，因此不是人物战力的简单相加，人物战力和团队战力无可比性。</Paragraph>
 					</RichTextBlock.Blocks>
@@ -208,7 +208,13 @@
 							</Button.Flyout>
 						</Button>
 						<Button x:Name="保存人物" Content="保存人物" Grid.Column="2" Margin="8" IsEnabled="False"/>
-						<Button x:Name="删除人物" Content="删除人物" Grid.Column="3" Margin="8" IsEnabled="False"/>
+						<Button Content="删除人物" Grid.Column="3" Margin="8" IsEnabled="False">
+							<Button.Flyout>
+								<Flyout>
+									<Button x:Name="删除人物" Content="确认删除？"/>
+								</Flyout>
+							</Button.Flyout>
+						</Button>
 					</Grid>
 					<ListView x:Name="文件夹中的人物" Header="文件夹中的人物" Grid.Row="2" Margin="8"/>
 				</Grid>
@@ -230,8 +236,9 @@
 								<RowDefinition Height="Auto"/>
 								<RowDefinition Height="Auto"/>
 								<RowDefinition Height="Auto"/>
-								<RowDefinition Height="Auto"/>
-							</Grid.RowDefinitions>
+									<RowDefinition Height="Auto"/>
+									<RowDefinition Height="Auto"/>
+								</Grid.RowDefinitions>
 							<TextBox x:Name="攻击系数" Header="攻击系数" Grid.Column="0" Grid.Row="0" Margin="8"/>
 							<TextBox x:Name="防御系数" Header="防御系数" Grid.Column="0" Grid.Row="1" Margin="8"/>
 							<TextBox x:Name="精准系数" Header="精准系数" Grid.Column="0" Grid.Row="2" Margin="8"/>
@@ -240,7 +247,15 @@
 								<Button x:Name="随机生成" Content="随机生成" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="8"/>
 							<TextBox x:Name="设定等级" Header="等级" Grid.Column="1" Grid.Row="2" Margin="8"/>
 							<TextBox x:Name="设定谋略" Header="谋略" Grid.Column="1" Grid.Row="3" Margin="8"/>
-							<TextBox x:Name="设定原型" Header="设定原型" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" Margin="8"/>
+								<TextBox x:Name="设定原型" Header="设定原型" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" Margin="8"/>
+								<RichTextBlock Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="5" Margin="8">
+									<RichTextBlock.Blocks>
+										<Paragraph>注意：这些系数不是实战</Paragraph>
+										<Paragraph>时真正的能力值,而是由</Paragraph>
+										<Paragraph>等级计算。这些系数是相</Paragraph>
+										<Paragraph>对的。</Paragraph>
+									</RichTextBlock.Blocks>
+								</RichTextBlock>
 							</Grid>
 							<ListView x:Name="装备列表" Header="装备列表" Grid.Column="1" Margin="8"/>
 							<Grid Grid.Column="2">

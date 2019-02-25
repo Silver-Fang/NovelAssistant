@@ -77,14 +77,14 @@ Namespace 数据类型
 	''' </summary>
 	''' <typeparam name="TKey">待抽取项的类型</typeparam>
 	Class 随机抽取列表(Of TKey)
-		ReadOnly 权重字典 As New Dictionary(Of TKey, Single)
-		Private i总权重 As Single
-		ReadOnly Property 总权重 As Single
+		ReadOnly 权重字典 As New Dictionary(Of TKey, Decimal)
+		Private i总权重 As Decimal
+		ReadOnly Property 总权重 As Decimal
 			Get
 				Return i总权重
 			End Get
 		End Property
-		Sub 添加(随机项 As TKey, 权重 As Single)
+		Sub 添加(随机项 As TKey, 权重 As Decimal)
 			If 权重 < 0 Then
 				Throw New ArgumentOutOfRangeException("权重", 权重, "权重不能为负")
 			Else
@@ -92,11 +92,11 @@ Namespace 数据类型
 				i总权重 += 权重
 			End If
 		End Sub
-		Default Property 权重(随机项 As TKey) As Single
+		Default Property 权重(随机项 As TKey) As Decimal
 			Get
 				Return 权重字典(随机项)
 			End Get
-			Set(value As Single)
+			Set(value As Decimal)
 				If value < 0 Then
 					Throw New ArgumentOutOfRangeException("权重", value, "权重不能为负")
 				Else
@@ -113,7 +113,7 @@ Namespace 数据类型
 		Function 抽取() As TKey
 			If i总权重 = 0 Then Throw New InvalidOperationException("所有项的权重皆为0，无法抽取")
 			Static 随机生成器 As New Random
-			Dim a As Single = 总权重 * 随机生成器.NextDouble
+			Dim a As Decimal = 总权重 * 随机生成器.NextDouble
 			For Each b As TKey In 权重字典.Keys
 				If 权重字典(b) > a Then
 					Return b

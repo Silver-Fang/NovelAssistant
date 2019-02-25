@@ -71,10 +71,11 @@ NotInheritable Class App
 		If rootFrame Is Nothing Then
 			' 创建要充当导航上下文的框架，并导航到第一页
 			rootFrame = New Frame()
+
+			AddHandler rootFrame.NavigationFailed, AddressOf OnNavigationFailed
 			' 将框架放在当前窗口中
 			Window.Current.Content = rootFrame
 		End If
-
 		If rootFrame.Content Is Nothing Then
 			' 当导航堆栈尚未还原时，导航到第一页，
 			' 并通过将所需信息作为导航参数传入来配置

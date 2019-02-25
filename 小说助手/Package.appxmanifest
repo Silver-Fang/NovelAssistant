@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
-  <Identity Name="642671AC6A72D.46507C4BE7FD2" Publisher="CN=C6ECC887-0CE3-4397-A2DB-DD8D66347822" Version="1.0.0.0" />
+  <Identity Name="642671AC6A72D.46507C4BE7FD2" Publisher="CN=C6ECC887-0CE3-4397-A2DB-DD8D66347822" Version="1.0.1.0" />
   <mp:PhoneIdentity PhoneProductId="e7e91d75-3bcd-4029-ab07-5df5fcb91714" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>小说助手</DisplayName>
@@ -21,7 +21,7 @@
         <uap:SplashScreen Image="Assets\SplashScreen.png" />
       </uap:VisualElements>
       <Extensions>
-        <uap:Extension Category="windows.fileTypeAssociation">
+        <uap:Extension Category="windows.fileTypeAssociation" >
           <uap:FileTypeAssociation Name="ndfigure">
             <uap:SupportedFileTypes>
               <uap:FileType>.人物</uap:FileType>

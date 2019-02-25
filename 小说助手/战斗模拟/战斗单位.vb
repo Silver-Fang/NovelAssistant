@@ -46,5 +46,9 @@ Namespace 战斗模拟
 		End Sub
 
 		MustOverride Sub 复活(复活血量 As Byte, Optional 提醒战力变化 As Boolean = True) Implements I可复活.复活
+
+		Overrides Function ToString() As String Implements IToString.ToString
+			Return 名称
+		End Function
 	End Class
 End Namespace

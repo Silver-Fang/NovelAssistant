@@ -11,7 +11,7 @@ Namespace 战斗模拟
 	End Interface
 	Class 团队
 		Inherits 战斗单位
-		Implements I界面团队, I战场团队
+		Implements I界面团队, I战场团队, I成员团队
 		Sub New(名称 As String)
 			Me.名称 = 名称
 		End Sub
@@ -55,13 +55,13 @@ Namespace 战斗模拟
 			If 提醒战力变化 Then 战力改变()
 		End Sub
 		Public Function 安排战斗计划(敌队 As IReadOnlyCollection(Of I战场团队)) As IReadOnlyCollection(Of I战场统计) Implements I战场团队.安排战斗计划
-			Dim a As I团队成员() = {}
+			Dim a As New List(Of I团队成员)
 			For Each b As 团队 In 敌队
-				a.Concat(b.i成员列表)
+				a.AddRange(b.i成员列表)
 			Next
-			Dim d As Object() = {}
+			Dim d As New Collection(Of I战场统计)
 			For Each c As I团队成员 In i成员列表
-				d.Concat(c.安排战斗计划(a))
+				d.Add(c.安排战斗计划(a))
 			Next
 			Return d
 		End Function

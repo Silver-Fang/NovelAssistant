@@ -1,25 +1,36 @@
 ﻿Imports Windows.Storage, Windows.Storage.AccessCache.StorageApplicationPermissions
-Namespace 人物设定
-	Interface I人物
+Imports 小说助手.战斗模拟
 
-	End Interface
+Namespace 人物设定
 	Friend Class 人物
-		ReadOnly Property 名字 As String
-		Property 攻击系数 As Byte = 0
-		Property 防御系数 As Byte = 0
-		Property 精准系数 As Byte = 0
-		Property 闪避系数 As Byte = 0
+		Implements I界面人物
 		Property 随机上限 As Byte = 0
-		Property 等级 As Byte = 0
-		Property 谋略 As Byte = 0
 		Property 设定原型 As String = ""
 		Property 装备列表 As New ObservableCollection(Of String)
+
+		Public ReadOnly Property 名字 As String = "" Implements I界面人物.名字
+
+		Public Property 等级 As Byte = 0 Implements I界面人物.等级
+
+		Public Property 攻击系数 As Byte = 0 Implements I界面人物.攻击系数
+
+		Public Property 防御系数 As Byte = 0 Implements I界面人物.防御系数
+
+		Public Property 精准系数 As Byte = 0 Implements I界面人物.精准系数
+
+		Public Property 闪避系数 As Byte = 0 Implements I界面人物.闪避系数
+
+		Public Property 谋略 As Byte = 0 Implements I界面人物.谋略
+
 		Sub New(名字 As String)
 			Me.名字 = 名字
 		End Sub
+
+		Public Function 总系数() As Byte Implements I界面人物.总系数
+			Return 攻击系数 + 防御系数 + 精准系数 + 闪避系数
+		End Function
 	End Class
 	Friend Module 人物与字节
-#Region "人物转字节"
 		<Extension> Sub Write(source As BinaryWriter, value As String())
 			If value Is Nothing Then
 				source.Write(0)
@@ -44,8 +55,6 @@ Namespace 人物设定
 				.Write(value.装备列表.ToArray)
 			End With
 		End Sub
-#End Region
-#Region "字节转人物"
 		<Extension> Function ReadStringArray(source As BinaryReader) As String()
 			Static 下标上界 As Byte
 			Try
@@ -87,11 +96,9 @@ Namespace 人物设定
 			Catch ex As EndOfStreamException
 			End Try
 		End Function
-#End Region
 	End Module
 	Class 用户界面
-		Implements I响应删除键
-		Private 人物文件夹 As StorageFolder, 删除焦点 As Selector
+		Private 人物文件夹 As StorageFolder
 		ReadOnly 路径 As TextBlock, 新建人物 As Control, 名字 As TextBox, 新装备名 As TextBox
 		WithEvents 选择文件夹 As ButtonBase, 新建人物_确定 As ButtonBase, 文件夹中的人物 As Selector, 保存人物 As ButtonBase, 删除人物 As ButtonBase, 随机生成 As ButtonBase, 装备列表 As Selector, 新建装备 As ButtonBase, 删除装备 As ButtonBase, 攻击系数 As TextBox, 防御系数 As TextBox, 精准系数 As TextBox, 闪避系数 As TextBox, 随机上限 As TextBox, 等级 As TextBox, 谋略 As TextBox, 设定原型 As TextBox
 		Private Function 获取文件夹中的人物文件() As IAsyncOperation(Of IReadOnlyList(Of StorageFile))
@@ -276,15 +283,6 @@ Namespace 人物设定
 			新建人物.IsEnabled = False
 			刷新人物列表(文件列表)
 			路径.Text = "打开的文件"
-		End Sub
-
-		Public Sub 删除键() Implements I响应删除键.删除键
-			If 删除焦点 Is 文件夹中的人物 Then 删除人物_Click()
-			If 删除焦点 Is 装备列表 Then 删除装备_Click()
-		End Sub
-
-		Private Sub GotFocus(sender As Object, e As RoutedEventArgs) Handles 文件夹中的人物.GotFocus, 装备列表.GotFocus
-			删除焦点 = sender
 		End Sub
 		Private Sub 要求保存()
 			Dim a As 人物文件 = 文件夹中的人物.SelectedItem

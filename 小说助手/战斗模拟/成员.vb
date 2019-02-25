@@ -142,7 +142,11 @@ Namespace 战斗模拟
 		End Sub
 
 		Public Sub 结算伤害(伤害 As UShort) Implements I战场成员.结算伤害
-			生命 -= 伤害
+			If 生命 > 伤害 Then
+				生命 -= 伤害
+			Else
+				生命 = 0
+			End If
 		End Sub
 
 		Public Sub 死亡(Optional 提醒战力变化 As Boolean = True) Implements I团队成员.死亡

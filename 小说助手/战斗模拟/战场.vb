@@ -12,15 +12,15 @@ Namespace 战斗模拟
 		Function 安排战斗计划(敌队 As IReadOnlyCollection(Of I战场团队)) As IReadOnlyCollection(Of I战场统计)
 	End Interface
 	Interface I战场回合
-		Inherits IGet受伤统计
 		Sub 添加输出统计(统计 As IReadOnlyCollection(Of I战场统计))
+		Function Get受伤统计() As IList(Of I战场统计)
 	End Interface
 	''' <summary>
 	''' 如果你使用自定义的回合类，必须重写“新回合”方法。
 	''' </summary>
 	Class 战场
 		Implements I界面战场
-		Private i复活血量 As Byte = 1, i当前回合 As Byte = 1
+		Private i复活血量 As Byte = 1, i当前回合 As Byte = 0
 		Public Event PropertyChanged As PropertyChangedEventHandler Implements INotifyPropertyChanged.PropertyChanged
 		Private Sub OnPropertyChanged(propertyName)
 			RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs(propertyName))
@@ -52,7 +52,7 @@ Namespace 战斗模拟
 			End Set
 		End Property
 
-		Public ReadOnly Property 团队列表 As 实时更新列表(Of I界面团队) Implements I界面战场.团队列表
+		Public ReadOnly Property 团队列表 As New 实时更新列表(Of I界面团队) Implements I界面战场.团队列表
 
 		Public Sub 全体复活() Implements I界面战场.全体复活
 			For Each a As I战场团队 In 团队列表
@@ -84,15 +84,15 @@ Namespace 战斗模拟
 		''' <returns>返回战斗结果。只要有>1个团队存活，说明战斗未结束，返回Nothing。1个团队存活，则该团队胜利；0个团队存活，则所有团队同归于尽。</returns>
 		Public Function 战一回合(回合号 As Byte) As String Implements I界面战场.战一回合
 			Dim d As I战场回合 = 新回合(回合号)
+			当前回合 = 回合号
 			'第一步，先要求每个存活的团队提交一份快照
-			Dim b As New Collection(Of I战场团队), i As New Collection(Of I战场团队)
+			Dim i As New Collection(Of I战场团队)
 			For Each a As I战场团队 In 团队列表
 				If a.存活 Then
-					b.Add(a)
 					i.Add(a)
 				End If
 			Next
-			Dim h As String = 生成战斗结果(b)
+			Dim h As String = 生成战斗结果(i)
 			If h IsNot Nothing Then Return h
 			'第二步，给每个团队发送所有敌队的快照，由其负责安排战斗计划，生成以其为输出者的伤害统计
 			For Each c As I战场团队 In i.ToArray
@@ -113,10 +113,12 @@ Namespace 战斗模拟
 			Return 生成战斗结果(g)
 		End Function
 
-		Public Function 全场成员() As I界面成员() Implements I界面战场.全场成员
-			Dim a As I战场成员() = {}
+		Public Function 全场成员() As IReadOnlyCollection(Of I界面成员) Implements I界面战场.全场成员
+			Dim a As New Collection(Of I界面成员)
 			For Each b As I战场团队 In 团队列表
-				a = a.Concat(b.成员列表)
+				For Each c As I战场成员 In b.成员列表
+					a.Add(c)
+				Next
 			Next
 			Return a
 		End Function
