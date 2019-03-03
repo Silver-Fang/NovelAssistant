@@ -5,30 +5,28 @@ Namespace 战斗模拟
 	End Interface
 	Interface I界面统计
 		Inherits I界面条目
-		ReadOnly Property 统计表() As IReadOnlyList(Of I界面条目)
+		Function Get统计表() As IReadOnlyList(Of I界面条目)
 	End Interface
 	Interface I界面回合
 		Inherits I统计树节点(Of Byte, UShort)
-		Function Get输出统计() As List(Of I界面统计)
-		Function Get受伤统计() As IList(Of I界面统计)
+		Function Get输出统计() As IReadOnlyList(Of I界面统计)
+		Function Get受伤统计() As IReadOnlyList(Of I界面统计)
 	End Interface
 	''' <summary>
 	''' 要求INotifyPropertyChanged保证实时数据绑定，相关方法由框架代码调用
 	''' </summary>
 	Interface I界面战场
-		Inherits INotifyPropertyChanged
-		ReadOnly Property 团队列表 As 实时更新列表(Of I界面团队)
+		Inherits INotifyPropertyChanged, I血量回合
+		ReadOnly Property 团队列表 As 实时更新列表
 		ReadOnly Property 复活血量Binding As 转换Binding
 		ReadOnly Property 当前回合Binding As 转换Binding
-		ReadOnly Property 回合记录 As ObservableCollection(Of I界面回合)
-		Property 复活血量 As Byte
+		ReadOnly Property 回合记录 As ObservableCollection(Of Object)
 		Sub 全体复活()
-		Property 当前回合 As Byte
 		Function 战一回合(回合号 As Byte) As String
-		Function 全场成员() As IReadOnlyCollection(Of I界面成员)
+		Function Get全场成员() As IReadOnlyList(Of I界面成员)
 	End Interface
 	Interface I界面战斗单位
-		Inherits I改名提醒, INotifyPropertyChanged, IToString
+		Inherits I改名提醒, INotifyPropertyChanged, IToString, I有名称
 		ReadOnly Property 名称Binding As 转换Binding
 		ReadOnly Property 整数战力Binding As 转换Binding
 		Sub 战力改变()
@@ -38,7 +36,7 @@ Namespace 战斗模拟
 		Sub 全灭(Optional 提醒战力改变 As Boolean = True)
 	End Interface
 	Interface I界面成员
-		Inherits I界面战斗单位, I有名称
+		Inherits I界面战斗单位, I有生命, I攻防精闪等谋
 		Property 所属团队 As I界面团队
 		ReadOnly Property 所属团队Binding As 转换Binding
 		ReadOnly Property 攻击Binding As 转换Binding
@@ -48,7 +46,6 @@ Namespace 战斗模拟
 		ReadOnly Property 生命Binding As 转换Binding
 		ReadOnly Property 等级Binding As 转换Binding
 		ReadOnly Property 谋略Binding As 转换Binding
-		ReadOnly Property 等级 As Byte
 		Function 总能力点() As UShort
 	End Interface
 	Interface I界面人物
@@ -61,22 +58,25 @@ Namespace 战斗模拟
 		Property 闪避系数 As Byte
 		Property 谋略 As Byte
 	End Interface
-	''' <summary>
-	''' 如果想要使用自定义的团队、战场或成员与此界面配合工作，需要继承此类并重写新战场、新成员、新团队三个函数。
-	''' </summary>
-	Class 用户界面
+	MustInherit Class 用户界面(Of T回合 As {New, I界面回合}, T团队 As {New, I界面团队}, T战场 As {New, I界面战场}, T成员 As {New, I界面成员})
 		Implements I响应删除键
-		ReadOnly 战场 As I界面战场, 所属团队 As Selector, 团队名 As TextBox, 成员名 As TextBox, 攻击 As TextBox, 防御 As TextBox, 精准 As TextBox, 闪避 As TextBox, 生命 As TextBox, 团队战力 As FrameworkElement, 个人战力 As FrameworkElement, 等级 As TextBox, 谋略 As TextBox, 回合数 As TextBlock, 回合总伤害 As TextBlock, 输出人 As TextBlock, 个人总输出 As TextBlock, 受伤人 As TextBlock, 个人总受伤 As TextBlock, 输出目标排行 As ItemsControl, 伤害来源排行 As ItemsControl
-		Private 删除焦点 As Selector
-		WithEvents 团队列表 As Selector, 创建团队 As ButtonBase, 删除团队 As ButtonBase, 删除成员 As ButtonBase, 添加成员 As ButtonBase, 成员列表 As Selector, 成员复活 As ButtonBase, 团队复活 As ButtonBase, 全体复活 As ButtonBase, 清空记录 As ButtonBase, 战一回合 As ButtonBase， 不死不休 As ButtonBase, 成员死亡 As ButtonBase, 团队全灭 As ButtonBase, 载入人物 As ButtonBase, 回合记录 As Selector, 输出排行 As Selector, 受伤排行 As Selector
-		''' <summary>
-		''' 如果想要使用自定义的战场与此界面配合工作，必须重写此方法。
-		''' </summary>
-		''' <returns></returns>
-		Protected Overridable Function 新战场() As I界面战场
-			Return New 战场
-		End Function
-		Sub New(团队列表 As Selector, 所属团队 As Selector, 复活血量 As FrameworkElement, 当前回合 As FrameworkElement, 创建团队 As ButtonBase, 团队名 As TextBox, 删除团队 As ButtonBase, 删除成员 As ButtonBase, 成员列表 As Selector, 添加成员 As ButtonBase, 成员名 As TextBox, 攻击 As TextBox, 防御 As TextBox, 精准 As TextBox, 闪避 As TextBox, 生命 As TextBox, 团队战力 As FrameworkElement, 个人战力 As FrameworkElement, 成员复活 As ButtonBase, 团队复活 As ButtonBase, 全体复活 As ButtonBase, 清空记录 As ButtonBase, 战一回合 As ButtonBase, 不死不休 As ButtonBase, 成员死亡 As ButtonBase, 团队全灭 As ButtonBase, 载入人物 As ButtonBase, 等级 As TextBox, 谋略 As TextBox, 回合数 As TextBlock, 回合总伤害 As TextBlock, 输出人 As TextBlock, 个人总输出 As TextBlock, 受伤人 As TextBlock, 个人总受伤 As TextBlock, 输出目标排行 As ItemsControl, 伤害来源排行 As ItemsControl, 回合记录 As Selector, 输出排行 As Selector, 受伤排行 As Selector)
+		ReadOnly 所属团队 As Selector, 团队名 As TextBox, 成员名 As TextBox, 攻击 As TextBox, 防御 As TextBox, 精准 As TextBox, 闪避 As TextBox, 生命 As TextBox, 团队战力 As FrameworkElement, 个人战力 As FrameworkElement, 等级 As TextBox, 谋略 As TextBox, 回合数 As TextBlock, 回合总伤害 As TextBlock, 输出人 As TextBlock, 个人总输出 As TextBlock, 受伤人 As TextBlock, 个人总受伤 As TextBlock, 输出目标排行 As ItemsControl, 伤害来源排行 As ItemsControl, 复活血量 As TextBox, 当前回合 As TextBox
+		Private 删除焦点 As Selector, i战场 As T战场
+		WithEvents 团队列表 As Selector, 创建团队 As ButtonBase, 删除团队 As ButtonBase, 删除成员 As ButtonBase, 添加成员 As ButtonBase, 成员列表 As Selector, 成员复活 As ButtonBase, 团队复活 As ButtonBase, 全体复活 As ButtonBase, 清空记录 As ButtonBase, 战一回合 As ButtonBase， 不死不休 As ButtonBase, 成员死亡 As ButtonBase, 团队全灭 As ButtonBase, 载入人物 As ButtonBase, 回合记录 As Selector, 输出排行 As Selector, 受伤排行 As Selector, 保存战斗 As ButtonBase, 载入战斗 As ButtonBase
+		Property 战场 As I界面战场
+			Get
+				Return i战场
+			End Get
+			Set(value As I界面战场)
+				i战场 = value
+				团队列表.ItemsSource = 战场.团队列表
+				所属团队.ItemsSource = 战场.团队列表
+				复活血量.SetBinding(TextBox.TextProperty, 战场.复活血量Binding)
+				当前回合.SetBinding(TextBox.TextProperty, 战场.当前回合Binding)
+				回合记录.ItemsSource = 战场.回合记录
+			End Set
+		End Property
+		Sub New(团队列表 As Selector, 所属团队 As Selector, 复活血量 As FrameworkElement, 当前回合 As FrameworkElement, 创建团队 As ButtonBase, 团队名 As TextBox, 删除团队 As ButtonBase, 删除成员 As ButtonBase, 成员列表 As Selector, 添加成员 As ButtonBase, 成员名 As TextBox, 攻击 As TextBox, 防御 As TextBox, 精准 As TextBox, 闪避 As TextBox, 生命 As TextBox, 团队战力 As FrameworkElement, 个人战力 As FrameworkElement, 成员复活 As ButtonBase, 团队复活 As ButtonBase, 全体复活 As ButtonBase, 清空记录 As ButtonBase, 战一回合 As ButtonBase, 不死不休 As ButtonBase, 成员死亡 As ButtonBase, 团队全灭 As ButtonBase, 载入人物 As ButtonBase, 等级 As TextBox, 谋略 As TextBox, 回合数 As TextBlock, 回合总伤害 As TextBlock, 输出人 As TextBlock, 个人总输出 As TextBlock, 受伤人 As TextBlock, 个人总受伤 As TextBlock, 输出目标排行 As ItemsControl, 伤害来源排行 As ItemsControl, 回合记录 As Selector, 输出排行 As Selector, 受伤排行 As Selector, 保存战斗 As ButtonBase, 载入战斗 As ButtonBase)
 			Me.团队列表 = 团队列表
 			Me.所属团队 = 所属团队
 			Me.创建团队 = 创建团队
@@ -104,7 +104,6 @@ Namespace 战斗模拟
 			Me.载入人物 = 载入人物
 			Me.等级 = 等级
 			Me.谋略 = 谋略
-			Me.战场 = If(战场, 新战场())
 			Me.回合数 = 回合数
 			Me.回合总伤害 = 回合总伤害
 			Me.输出人 = 输出人
@@ -116,23 +115,14 @@ Namespace 战斗模拟
 			Me.输出排行 = 输出排行
 			Me.受伤排行 = 受伤排行
 			Me.回合记录 = 回合记录
-			战场 = 新战场()
-			团队列表.ItemsSource = 战场.团队列表
-			所属团队.ItemsSource = 战场.团队列表
-			复活血量.SetBinding(TextBox.TextProperty, 战场.复活血量Binding)
-			当前回合.SetBinding(TextBox.TextProperty, 战场.当前回合Binding)
-			回合记录.ItemsSource = 战场.回合记录
+			Me.保存战斗 = 保存战斗
+			Me.载入战斗 = 载入战斗
+			Me.复活血量 = 复活血量
+			Me.当前回合 = 当前回合
+			战场 = New T战场
 		End Sub
-		''' <summary>
-		''' 派生类可以重写此方法以将自定义的I界面团队类型载入界面
-		''' </summary>
-		''' <param name="团队名"></param>
-		''' <returns></returns>
-		Protected Overridable Function 新团队(团队名 As String) As I界面团队
-			Return New 团队(团队名)
-		End Function
 		Private Sub 创建团队_Click(sender As Object, e As RoutedEventArgs) Handles 创建团队.Click
-			战场.团队列表.Add(新团队(团队名.Text))
+			战场.团队列表.Add(New T团队 With {.名称 = 团队名.Text})
 		End Sub
 		Private Sub 删除团队_Click() Handles 删除团队.Click
 			战场.团队列表.Remove(团队列表.SelectedItem)
@@ -141,22 +131,9 @@ Namespace 战斗模拟
 			Dim a As I界面成员 = 成员列表.SelectedItem
 			If a IsNot Nothing Then a.所属团队.成员列表.Remove(a)
 		End Sub
-		''' <summary>		
-		''' 派生类可以重写此方法以将自定义的I界面成员类型载入界面。
-		''' </summary>
-		''' <param name="成员名"></param>
-		''' <param name="攻击"></param>
-		''' <param name="防御"></param>
-		''' <param name="精准"></param>
-		''' <param name="闪避"></param>
-		''' <param name="生命"></param>
-		''' <param name="所属团队">注意：将成员加入团队需要由成员自己实现，界面只是单纯创建成员，不会负责将其加入团队。</param>
-		''' <param name="等级"></param>
-		''' <param name="谋略"></param>
-		''' <returns></returns>
-		Protected Overridable Function 新成员(成员名 As String, 攻击 As UShort, 防御 As UShort, 精准 As UShort, 闪避 As UShort, 生命 As ULong, 所属团队 As I界面团队, 等级 As Byte, 谋略 As Byte) As I界面成员
-			Return New 成员(成员名, 攻击, 防御, 精准, 闪避, 生命, 所属团队, 等级, 谋略)
-		End Function
+		Private Sub 新成员(名称 As String, 攻击 As UShort, 防御 As UShort, 精准 As UShort, 闪避 As UShort, 生命 As ULong, 所属团队 As I界面团队, 等级 As Byte, 谋略 As Byte)
+			Dim a As New T成员 With {.名称 = 名称, .所属团队 = 所属团队, .攻击 = 攻击, .防御 = 防御, .精准 = 精准, .闪避 = 闪避, .生命 = 生命, .等级 = 等级, .谋略 = 谋略}
+		End Sub
 		Private Sub 添加成员_Click(sender As Object, e As RoutedEventArgs) Handles 添加成员.Click
 			Dim a As I界面团队 = 所属团队.SelectedItem
 			If a Is Nothing Then
@@ -165,7 +142,7 @@ Namespace 战斗模拟
 			Else
 				Static 错误提示 As New Flyout With {.Content = New TextBlock With {.Text = "攻击、防御、精准、闪避必须在0~32767之间，生命必须在0~2147483647之间，等级、谋略必须在0~255之间"}}
 				Try
-					新成员(成员名.Text, 攻击.Text, 防御.Text, 精准.Text, 闪避.Text, 生命.Text, a, 等级.Text, 谋略.Text)
+					Dim b As I界面成员 = New T成员 With {.名称 = 成员名.Text, .攻击 = 攻击.Text, .防御 = 防御.Text, .精准 = 精准.Text, .闪避 = 闪避.Text, .生命 = 生命.Text, .所属团队 = a, .等级 = 等级.Text, .谋略 = 谋略.Text}
 				Catch ex As OverflowException
 					错误提示.ShowAt(sender)
 					Exit Sub
@@ -280,8 +257,9 @@ Namespace 战斗模拟
 				a.FileTypeFilter.Add(".人物")
 				Dim b As IAsyncOperation(Of IReadOnlyList(Of StorageFile)) = a.PickMultipleFilesAsync()
 				'让用户选择文件，此时计算全场成员能力点数-等级的回归方程
-				Dim f As I界面成员() = 战场.全场成员.ToArray, p As I界面人物, c As IReadOnlyList(Of StorageFile) = Await b
+				Dim f As I界面成员() = 战场.Get全场成员.ToArray, p As I界面人物, c As IReadOnlyList(Of StorageFile) = Await b
 				If c IsNot Nothing Then
+					Dim r As Single
 					If f.Any Then
 						Dim g(f.GetUpperBound(0)) As Integer, h(f.GetUpperBound(0)) As Single
 						For d As Byte = 0 To f.GetUpperBound(0)
@@ -293,15 +271,14 @@ Namespace 战斗模拟
 							k += (g(d) - i) * (h(d) - j)
 							l += (g(d) - i) ^ 2
 						Next
-						Dim r As Single
 						If l = 0 Then
 							For Each o As StorageFile In c
 								p = New BinaryReader(Await o.OpenStreamForReadAsync).Read人物
-								r = f(0).总能力点 * Math.Exp((p.等级 - f(0).等级) / 2) / p.总系数
+								r = f(0).总能力点 * Math.Exp((CSByte(p.等级) - f(0).等级) / 2) / p.总系数
 								Try
 									新成员(p.名字, p.攻击系数 * r, p.防御系数 * r, p.精准系数 * r, p.闪避系数 * r, 生命.Text, 所属团队.SelectedItem, p.等级, p.谋略)
 								Catch ex As InvalidCastException
-									新成员(p.名字, p.攻击系数 * r, p.防御系数 * r, p.精准系数 * r, p.闪避系数 * r, p.防御系数 * 战场.复活血量, 所属团队.SelectedItem, p.等级, p.谋略)
+									新成员(p.名字, p.攻击系数 * r, p.防御系数 * r, p.精准系数 * r, p.闪避系数 * r, p.防御系数 * r * 战场.复活血量, 所属团队.SelectedItem, p.等级, p.谋略)
 								End Try
 							Next
 						Else
@@ -313,17 +290,27 @@ Namespace 战斗模拟
 								Try
 									新成员(p.名字, p.攻击系数 * r, p.防御系数 * r, p.精准系数 * r, p.闪避系数 * r, 生命.Text, 所属团队.SelectedItem, p.等级, p.谋略)
 								Catch ex As InvalidCastException
-									新成员(p.名字, p.攻击系数 * r, p.防御系数 * r, p.精准系数 * r, p.闪避系数 * r, p.防御系数 * 战场.复活血量, 所属团队.SelectedItem, p.等级, p.谋略)
+									新成员(p.名字, p.攻击系数 * r, p.防御系数 * r, p.精准系数 * r, p.闪避系数 * r, p.防御系数 * r * 战场.复活血量, 所属团队.SelectedItem, p.等级, p.谋略)
 								End Try
 							Next
 						End If
 					Else
+						Dim d As New Collection(Of I界面人物), g As Single, h As Single = 0, i As I界面人物
 						For Each o As StorageFile In c
 							p = New BinaryReader(Await o.OpenStreamForReadAsync).Read人物
+							d.Add(p)
+							g = p.总系数 / Math.Exp(p.等级 / 2)
+							If g > h Then
+								h = g
+								i = p
+							End If
+						Next
+						For Each j As I界面人物 In d
+							r = Math.Exp((j.等级 - i.等级) / 2) * i.总系数 / j.总系数
 							Try
-								新成员(p.名字, p.攻击系数, p.防御系数, p.精准系数, p.闪避系数, 生命.Text, 所属团队.SelectedItem, p.等级, p.谋略)
+								新成员(j.名字, j.攻击系数 * r, j.防御系数 * r, j.精准系数 * r, j.闪避系数 * r, 生命.Text, 所属团队.SelectedItem, j.等级, j.谋略)
 							Catch ex As InvalidCastException
-								新成员(p.名字, p.攻击系数, p.防御系数, p.精准系数, p.闪避系数, p.防御系数 * 战场.复活血量, 所属团队.SelectedItem, p.等级, p.谋略)
+								新成员(j.名字, j.攻击系数 * r, j.防御系数 * r, j.精准系数 * r, j.闪避系数 * r, j.防御系数 * r * 战场.复活血量, 所属团队.SelectedItem, j.等级, j.谋略)
 							End Try
 						Next
 					End If
@@ -351,7 +338,7 @@ Namespace 战斗模拟
 			If a IsNot Nothing Then
 				输出人.Text = a.键.名称
 				个人总输出.Text = a.值
-				Dim b As List(Of I界面条目) = a.统计表
+				Dim b As List(Of I界面条目) = a.Get统计表
 				b.Sort()
 				输出目标排行.ItemsSource = b
 			End If
@@ -362,10 +349,40 @@ Namespace 战斗模拟
 			If a IsNot Nothing Then
 				受伤人.Text = a.键.名称
 				个人总受伤.Text = a.值
-				Dim b As List(Of I界面条目) = a.统计表
+				Dim b As List(Of I界面条目) = a.Get统计表
 				b.Sort()
 				伤害来源排行.ItemsSource = b
 			End If
 		End Sub
+		Protected MustOverride Sub 写入战场(文件流 As Stream, 战场 As I界面战场)
+		Private Async Sub 保存战斗_Click(sender As Object, e As RoutedEventArgs) Handles 保存战斗.Click
+			Dim a As New Pickers.FileSavePicker
+			a.FileTypeChoices.Add("战斗", {".战斗"})
+			Dim b As StorageFile = Await a.PickSaveFileAsync
+			If b IsNot Nothing Then
+				写入战场(Await b.OpenStreamForWriteAsync, 战场)
+			End If
+		End Sub
+		Protected MustOverride Function 读取战场(文件流 As Stream) As I界面战场
+		Private Async Sub 载入战斗_Click(sender As Object, e As RoutedEventArgs) Handles 载入战斗.Click
+			Dim a As New Pickers.FileOpenPicker
+			a.FileTypeFilter.Add(".战斗")
+			Dim b As StorageFile = Await a.PickSingleFileAsync
+			If b IsNot Nothing Then 战场 = 读取战场(Await b.OpenStreamForReadAsync)
+		End Sub
+	End Class
+	Class 用户界面
+		Inherits 用户界面(Of 战斗回合, 团队, 战场, 成员)
+		Sub New(团队列表 As Selector, 所属团队 As Selector, 复活血量 As FrameworkElement, 当前回合 As FrameworkElement, 创建团队 As ButtonBase, 团队名 As TextBox, 删除团队 As ButtonBase, 删除成员 As ButtonBase, 成员列表 As Selector, 添加成员 As ButtonBase, 成员名 As TextBox, 攻击 As TextBox, 防御 As TextBox, 精准 As TextBox, 闪避 As TextBox, 生命 As TextBox, 团队战力 As FrameworkElement, 个人战力 As FrameworkElement, 成员复活 As ButtonBase, 团队复活 As ButtonBase, 全体复活 As ButtonBase, 清空记录 As ButtonBase, 战一回合 As ButtonBase, 不死不休 As ButtonBase, 成员死亡 As ButtonBase, 团队全灭 As ButtonBase, 载入人物 As ButtonBase, 等级 As TextBox, 谋略 As TextBox, 回合数 As TextBlock, 回合总伤害 As TextBlock, 输出人 As TextBlock, 个人总输出 As TextBlock, 受伤人 As TextBlock, 个人总受伤 As TextBlock, 输出目标排行 As ItemsControl, 伤害来源排行 As ItemsControl, 回合记录 As Selector, 输出排行 As Selector, 受伤排行 As Selector, 保存战斗 As ButtonBase, 载入战斗 As ButtonBase)
+			MyBase.New(团队列表, 所属团队, 复活血量, 当前回合, 创建团队, 团队名, 删除团队, 删除成员, 成员列表, 添加成员, 成员名, 攻击, 防御, 精准, 闪避, 生命, 团队战力, 个人战力, 成员复活, 团队复活, 全体复活, 清空记录, 战一回合, 不死不休, 成员死亡, 团队全灭, 载入人物, 等级, 谋略, 回合数, 回合总伤害, 输出人, 个人总输出, 受伤人, 个人总受伤, 输出目标排行, 伤害来源排行, 回合记录, 输出排行, 受伤排行, 保存战斗, 载入战斗)
+		End Sub
+
+		Protected Overrides Sub 写入战场(文件流 As Stream, 战场 As I界面战场)
+			Call New BinaryWriter(文件流).Write(DirectCast(战场, 战场)).Close()
+		End Sub
+
+		Protected Overrides Function 读取战场(文件流 As Stream) As I界面战场
+			Return New BinaryReader(文件流).Read文件战场(Of 成员, 团队, 战场, 战斗回合)
+		End Function
 	End Class
 End Namespace

@@ -6,21 +6,22 @@ Namespace 战斗模拟
 	Interface I成员统计
 		Sub 添加条目(目标 As 成员, 伤害 As UShort)
 	End Interface
+	Interface I有生命
+		Property 生命 As ULong
+	End Interface
+	Interface I攻防精闪等谋
+		Property 攻击 As UShort
+		Property 防御 As UShort
+		Property 精准 As UShort
+		Property 闪避 As UShort
+		Property 等级 As Byte
+		Property 谋略 As Byte
+	End Interface
 	Class 成员
 		Inherits 战斗单位
-		Implements I界面成员, I战场成员, I团队成员, I回合成员
+		Implements I界面成员, I战场成员, I团队成员, I回合成员, I文件成员
 		Private i所属团队 As I成员团队, i攻击 As UShort, i防御 As UShort, i精准 As UShort, i闪避 As UShort, i生命 As ULong, i等级 As Byte, i谋略 As Byte
-		Sub New(成员名 As String, 攻击 As UShort, 防御 As UShort, 精准 As UShort, 闪避 As UShort, 生命 As ULong, 所属团队 As I成员团队, 等级 As Byte, 谋略 As Byte)
-			名称 = 成员名
-			i攻击 = 攻击
-			i防御 = 防御
-			i精准 = 精准
-			i闪避 = 闪避
-			i生命 = 生命
-			i所属团队 = 所属团队
-			所属团队.成员列表.Add(Me)
-			i等级 = 等级
-			i谋略 = 谋略
+		Sub New()
 		End Sub
 		Public Property 所属团队 As I界面团队 Implements I界面成员.所属团队
 			Get
@@ -34,7 +35,7 @@ Namespace 战斗模拟
 		End Property
 
 		Public ReadOnly Property 所属团队Binding As New 转换Binding(Me, "所属团队") Implements I界面成员.所属团队Binding
-		Property 攻击 As UShort
+		Property 攻击 As UShort Implements I文件成员.攻击
 			Get
 				Return i攻击
 			End Get
@@ -46,7 +47,7 @@ Namespace 战斗模拟
 		End Property
 
 		Public ReadOnly Property 攻击Binding As New 转换Binding(Me, "攻击", GetType(UShort)) Implements I界面成员.攻击Binding
-		Property 防御 As UShort
+		Property 防御 As UShort Implements I文件成员.防御
 			Get
 				Return i防御
 			End Get
@@ -57,7 +58,7 @@ Namespace 战斗模拟
 		End Property
 
 		Public ReadOnly Property 防御Binding As New 转换Binding(Me, "防御", GetType(UShort)) Implements I界面成员.防御Binding
-		Property 精准 As UShort
+		Property 精准 As UShort Implements I文件成员.精准
 			Get
 				Return i精准
 			End Get
@@ -69,7 +70,7 @@ Namespace 战斗模拟
 		End Property
 
 		Public ReadOnly Property 精准Binding As New 转换Binding(Me, "精准", GetType(UShort)) Implements I界面成员.精准Binding
-		Property 闪避 As UShort
+		Property 闪避 As UShort Implements I文件成员.闪避
 			Get
 				Return i闪避
 			End Get
@@ -84,7 +85,7 @@ Namespace 战斗模拟
 
 		Public ReadOnly Property 生命Binding As New 转换Binding(Me, "生命", GetType(ULong)) Implements I界面成员.生命Binding
 
-		Public Property 等级 As Byte Implements I界面成员.等级
+		Public Property 等级 As Byte Implements I攻防精闪等谋.等级
 			Get
 				Return i等级
 			End Get
@@ -111,7 +112,7 @@ Namespace 战斗模拟
 				End If
 			End Get
 		End Property
-		Property 谋略 As Byte
+		Property 谋略 As Byte Implements I文件成员.谋略
 			Get
 				Return i谋略
 			End Get
@@ -123,7 +124,7 @@ Namespace 战斗模拟
 
 		Public ReadOnly Property 谋略Binding As New 转换Binding(Me, "谋略", GetType(Byte)) Implements I界面成员.谋略Binding
 
-		Public Property 生命 As ULong Implements I回合成员.生命
+		Public Property 生命 As ULong Implements I有生命.生命
 			Get
 				Return i生命
 			End Get
@@ -131,6 +132,17 @@ Namespace 战斗模拟
 				i生命 = value
 				OnPropertyChanged("生命")
 				战力改变()
+			End Set
+		End Property
+
+		Private Property I文件成员_所属团队 As I有名称 Implements I文件成员.所属团队
+			Get
+				Return i所属团队
+			End Get
+			Set(value As I有名称)
+				If i所属团队 IsNot Nothing Then i所属团队.成员列表.Remove(Me)
+				i所属团队 = value
+				If value IsNot Nothing Then i所属团队.成员列表.Add(Me)
 			End Set
 		End Property
 

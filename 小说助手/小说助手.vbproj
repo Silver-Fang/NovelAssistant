@@ -147,6 +147,7 @@
     <Compile Include="战斗模拟\战场.vb" />
     <Compile Include="战斗模拟\战斗单位.vb" />
     <Compile Include="战斗模拟\战斗回合.vb" />
+    <Compile Include="战斗模拟\保存文件.vb" />
     <Compile Include="战斗模拟\战斗记录.vb" />
     <Compile Include="战斗模拟\用户界面.vb" />
     <Compile Include="虚拟界面.vb" />

@@ -8,7 +8,7 @@ Namespace 战斗模拟
 		ReadOnly Property 战力 As Single
 	End Interface
 	Interface I有名称
-		ReadOnly Property 名称 As String
+		Property 名称 As String
 	End Interface
 	MustInherit Class 战斗单位
 		Implements I界面战斗单位, I有名称, I可复活, I有战力

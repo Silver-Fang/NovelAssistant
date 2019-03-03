@@ -13,7 +13,7 @@
 			<NavigationViewItem x:Name="人物设定NavigationViewItem" Content="人物设定" Icon="ContactInfo"/>
 		</NavigationView.MenuItems>
 		<Grid>
-			<Pivot x:Name="战斗模拟Pivot" Visibility="Collapsed"  FontFamily="Segoe UI">
+			<Pivot x:Name="战斗模拟Pivot" Visibility="Visible">
 			<PivotItem Header="团队成员">
 				<Grid>
 					<Grid.ColumnDefinitions>
@@ -97,15 +97,19 @@
 							<RowDefinition Height="Auto"/>
 							<RowDefinition Height="Auto"/>
 							<RowDefinition Height="Auto"/>
-							<RowDefinition Height="Auto"/>
-						</Grid.RowDefinitions>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+							</Grid.RowDefinitions>
 						<Button x:Name="战一回合" Content="战一回合" Grid.Row="0" Margin="8"/>
 						<Button x:Name="不死不休" Content="不死不休" Grid.Row="1" Margin="8"/>
 						<Button x:Name="清空记录" Content="清空记录" Grid.Row="2" Margin="8"/>
 						<Button x:Name="全体复活" Content="全体复活" Grid.Row="3" Margin="8"/>
 						<TextBox x:Name="复活血量" Header="复活血量" Grid.Row="4" Margin="8"/>
 						<TextBox x:Name="当前回合" Header="当前回合" Grid.Row="5" Margin="8"/>
-					</Grid>
+							<Button x:Name="保存战斗" Content="保存战斗" Grid.Row="6" Margin="8"/>
+							<Button x:Name="载入战斗" Content="载入战斗" Grid.Row="7" Margin="8"/>
+						</Grid>
 						<ListView x:Name="回合记录" Header="回合记录" Grid.Column="1" Margin="8" BorderBrush="Black" BorderThickness="1" Padding="8"/>
 						<Grid Grid.Column="2">
 							<Grid.RowDefinitions>
